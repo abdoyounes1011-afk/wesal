@@ -9,6 +9,7 @@ export const auth = getAuth(app);
 /* CRITICAL: Passing firestoreDatabaseId ensures the specific Firestore instance is used */
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 export async function testFirestoreConnection(): Promise<boolean> {
   try {

@@ -100,7 +100,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       case 'auth/weak-password':
         return 'كلمة المرور ضعيفة. يرجى اختيار كلمة مرور لا تقل عن 6 أحرف.';
       case 'auth/popup-closed-by-user':
+      case 'auth/cancelled-popup-request':
         return 'تم إغلاق نافذة تسجيل الدخول قبل إتمام العملية.';
+      case 'auth/popup-blocked':
+        return 'قام المتصفح بحظر نافذة تسجيل الدخول عبر Google. يرجى السماح بالنوافذ المنبثقة (Pop-ups) والمحاولة مرة أخرى.';
+      case 'auth/unauthorized-domain': {
+        const host = typeof window !== 'undefined' ? window.location.hostname : '';
+        return `النطاق الحالي (${host}) غير مصرح به في إعدادات Firebase Auth. أضف هذا النطاق في Firebase Console ضمن Authentication ← Settings ← Authorized domains، أو استخدم البريد الإلكتروني وكلمة المرور.`;
+      }
+      case 'auth/operation-not-allowed':
+        return 'طريقة تسجيل الدخول هذه غير مفعلة في إعدادات مشروع Firebase.';
       case 'auth/network-request-failed':
         return 'تعذر الاتصال بالشبكة. يرجى التأكد من اتصالك بالإنترنت.';
       default:
