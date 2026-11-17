@@ -1,0 +1,134 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened helpers
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // User profile validation
+    function isValidUserProfile(data, userId) {
+      return data.userId == userId &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.email is string && data.email.size() <= 256 &&
+             (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64)) &&
+             (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 64));
+    }
+
+    // Reading goal validation
+    function isValidReadingGoal(data, userId) {
+      return data.userId == userId &&
+             data.goalType in ['pages', 'minutes'] &&
+             data.dailyTarget is number && data.dailyTarget > 0 && data.dailyTarget <= 604 &&
+             (!('minimumTwoMinuteGoal' in data) || data.minimumTwoMinuteGoal is bool) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64)) &&
+             (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 64));
+    }
+
+    // Reading progress validation
+    function isValidReadingProgress(data, userId) {
+      return data.userId == userId &&
+             data.lastSurah is number && data.lastSurah >= 1 && data.lastSurah <= 114 &&
+             data.lastAyah is number && data.lastAyah >= 1 && data.lastAyah <= 286 &&
+             data.lastPage is number && data.lastPage >= 1 && data.lastPage <= 604 &&
+             (!('lastSurahName' in data) || (data.lastSurahName is string && data.lastSurahName.size() <= 64)) &&
+             (!('dailyPagesRead' in data) || (data.dailyPagesRead is number && data.dailyPagesRead >= 0)) &&
+             (!('dailyMinutesRead' in data) || (data.dailyMinutesRead is number && data.dailyMinutesRead >= 0)) &&
+             (!('isDailyGoalCompleted' in data) || data.isDailyGoalCompleted is bool) &&
+             (!('isTwoMinuteGoalCompleted' in data) || data.isTwoMinuteGoalCompleted is bool);
+    }
+
+    // Reading history validation
+    function isValidReadingHistory(data, userId) {
+      return data.userId == userId &&
+             data.date is string && data.date.size() <= 16 &&
+             (!('pagesRead' in data) || (data.pagesRead is number && data.pagesRead >= 0)) &&
+             (!('minutesRead' in data) || (data.minutesRead is number && data.minutesRead >= 0)) &&
+             (!('versesRead' in data) || (data.versesRead is number && data.versesRead >= 0)) &&
+             (!('isDailyGoalCompleted' in data) || data.isDailyGoalCompleted is bool) &&
+             (!('isTwoMinuteGoalCompleted' in data) || data.isTwoMinuteGoalCompleted is bool);
+    }
+
+    // Habit settings validation
+    function isValidHabitSettings(data, userId) {
+      return data.userId == userId &&
+             (!('dailyRoutine' in data) || (data.dailyRoutine is string && data.dailyRoutine.size() <= 64)) &&
+             (!('customRoutine' in data) || (data.customRoutine is string && data.customRoutine.size() <= 200)) &&
+             (!('preferredTime' in data) || (data.preferredTime is string && data.preferredTime.size() <= 16)) &&
+             (!('habitStatement' in data) || (data.habitStatement is string && data.habitStatement.size() <= 300));
+    }
+
+    // Notification settings validation
+    function isValidNotificationSettings(data, userId) {
+      return data.userId == userId &&
+             (!('browserPushEnabled' in data) || data.browserPushEnabled is bool) &&
+             (!('fcmToken' in data) || (data.fcmToken is string && data.fcmToken.size() <= 512)) &&
+             (!('scheduledReminder' in data) || data.scheduledReminder is bool) &&
+             (!('missedReminder' in data) || data.missedReminder is bool) &&
+             (!('endOfDayReminder' in data) || data.endOfDayReminder is bool) &&
+             (!('preferredTime' in data) || (data.preferredTime is string && data.preferredTime.size() <= 16));
+    }
+
+    // User document tree
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserProfile(incoming(), userId);
+      allow update: if isOwner(userId) && isValidUserProfile(incoming(), userId);
+      allow delete: if false;
+
+      // Subcollections
+      match /goals/{goalId} {
+        allow get, list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidReadingGoal(incoming(), userId);
+        allow delete: if false;
+      }
+
+      match /readingProgress/{progressId} {
+        allow get, list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidReadingProgress(incoming(), userId);
+        allow delete: if false;
+      }
+
+      match /readingHistory/{historyDate} {
+        allow get, list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidId(historyDate) && isValidReadingHistory(incoming(), userId);
+        allow delete: if false;
+      }
+
+      match /habitSettings/{settingsId} {
+        allow get, list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidHabitSettings(incoming(), userId);
+        allow delete: if false;
+      }
+
+      match /notificationSettings/{notifId} {
+        allow get, list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidNotificationSettings(incoming(), userId);
+        allow delete: if false;
+      }
+    }
+  }
+}

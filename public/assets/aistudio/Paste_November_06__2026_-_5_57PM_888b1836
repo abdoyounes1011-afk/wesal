@@ -1,0 +1,1173 @@
+MASTER PROMPT — QURAN HABIT SYSTEM
+
+A complete Quran reading habit platform
+
+Act as a senior full-stack developer, product designer, UX researcher, and Firebase architect.
+
+Your task is to design and build a complete, production-ready Arabic web application that helps Muslims develop and maintain a sustainable daily habit of reading the Holy Quran.
+
+This is NOT simply an online Quran reader, a Quran completion tracker, or a motivational website.
+
+It is a habit-building system centered around one primary objective:
+
+Help users read the Quran consistently every day, even when they have limited time, low motivation, or a disrupted routine.
+
+The product must combine:
+
+* Habit formation principles.
+* The Two-Minute Rule from Atomic Habits.
+* Habit Stacking.
+* Flexible daily reading goals.
+* A traditional digital Quran (Mushaf).
+* Tafsir Al-Saadi.
+* Personal reading progress.
+* Firebase authentication and cloud synchronization.
+* Gentle browser push notifications.
+
+Build the actual functional application, not just a static mockup.
+
+⸻
+
+1. PRODUCT PHILOSOPHY
+
+The entire product must be designed around these principles:
+
+A. Consistency over quantity
+
+The objective is not to encourage users to read as many pages as possible.
+
+Instead, help them choose a realistic amount they can maintain even on busy days.
+
+B. Sustainable habits over temporary motivation
+
+Avoid encouraging users to set ambitious goals simply because they feel motivated when first joining.
+
+The onboarding experience must help users choose a manageable daily commitment.
+
+C. Never make users feel guilty
+
+Missing a day should not feel like failure.
+
+The system must never:
+
+* Punish users for missing a day.
+* Create accumulated reading obligations.
+* Force users to compensate for missed days.
+* Use guilt-inducing messages.
+* Present an interrupted streak as a personal failure.
+
+D. Make starting effortless
+
+The user should be able to open the application and begin reading with minimal friction.
+
+E. Protect the spiritual purpose
+
+Avoid turning Quran reading into a competition or gamified achievement system.
+
+Do not implement:
+
+* Leaderboards.
+* Public rankings.
+* Competitive challenges.
+* Excessive points and badges.
+* Pressure to finish the Quran within a certain number of days.
+
+The application should feel peaceful, respectful, and spiritually focused.
+
+⸻
+
+2. LANGUAGE AND GENERAL EXPERIENCE
+
+The application must be entirely Arabic-first.
+
+Requirements:
+
+* Arabic user interface.
+* Right-to-left (RTL) layout throughout the application.
+* Arabic Quran text.
+* Arabic Tafsir Al-Saadi.
+* Proper Arabic typography and text shaping.
+* Correct Arabic numerals and formatting where appropriate.
+* Mobile-first responsive design.
+* Full support for mobile phones, tablets, and desktop computers.
+
+All buttons, navigation labels, notifications, error messages, onboarding steps, and settings must be written in natural Arabic.
+
+Avoid unnecessary English terminology in the user interface.
+
+English may be used internally in code, database fields, and development documentation.
+
+⸻
+
+3. AUTHENTICATION AND USER ACCOUNTS
+
+Integrate the application with Firebase.
+
+Use Firebase Authentication for account management.
+
+Required features:
+
+1. Create an account using email and password.
+2. Sign in using email and password.
+3. Sign out.
+4. Forgot password and password reset.
+5. Persistent authentication sessions.
+6. Proper form validation.
+7. Clear Arabic error messages.
+8. Loading and error states.
+
+Every user must have an individual account identified by their Firebase Authentication UID.
+
+All user-specific information must be saved in the cloud.
+
+The user must be able to:
+
+* Start using the website on their phone.
+* Open it later on their computer.
+* Log into the same account.
+* Find their exact reading goal, reading history, settings, and last reading position.
+
+No important user progress should exist only in temporary browser state or local storage.
+
+⸻
+
+4. FIREBASE BACKEND AND DATA SYNCHRONIZATION
+
+Use:
+
+* Firebase Authentication.
+* Cloud Firestore.
+* Firebase Cloud Messaging (FCM).
+* Firebase Cloud Functions where necessary for scheduled notifications and trusted server-side operations.
+* Firebase Hosting if appropriate for deployment.
+
+Data persistence
+
+Save the following information:
+
+User profile
+
+* User ID.
+* Email.
+* Account creation date.
+* User preferences.
+
+Reading goals
+
+* Goal type: pages or minutes.
+* Daily target quantity.
+* Minimum two-minute goal.
+* Goal creation date.
+* Current goal settings.
+* Goal adjustment history where useful.
+
+Reading progress
+
+* Last Surah.
+* Last Ayah.
+* Last Mushaf page.
+* Last reading timestamp.
+* Current reading session.
+* Daily completed progress.
+
+Reading history
+
+* Date.
+* Pages read.
+* Verses read.
+* Reading duration.
+* Daily goal completion status.
+* Whether the user used Don’t Miss Mode.
+* Reading session information.
+
+Habit settings
+
+* Selected daily routine.
+* Preferred reading time.
+* Habit stacking configuration.
+* Reminder preferences.
+
+Notification settings
+
+* Browser notification permission.
+* FCM token and associated device information.
+* Preferred notification schedule.
+* Notification preferences.
+
+Synchronization requirements
+
+* Save user changes automatically.
+* Synchronize changes between devices.
+* Restore the latest saved state after login.
+* Avoid overwriting newer progress with stale device data.
+* Handle simultaneous sessions safely.
+* Display clear synchronization states when necessary.
+
+Offline support
+
+Enable Firestore offline persistence where supported.
+
+The application should:
+
+* Allow access to previously cached Quran pages when possible.
+* Preserve reading progress locally during temporary disconnection.
+* Queue supported changes.
+* Synchronize them when internet access returns.
+* Handle synchronization conflicts safely.
+
+Never expose Firebase Admin SDK credentials or private secrets in frontend code.
+
+Configure Firestore Security Rules so that each authenticated user can access only their own personal data.
+
+Validate all sensitive operations server-side when necessary.
+
+⸻
+
+5. ONBOARDING — BUILDING THE READING HABIT
+
+The first-time user experience is extremely important.
+
+Do not immediately show a complicated dashboard.
+
+Guide the user through a short, friendly onboarding process.
+
+The onboarding should explain that the objective is to build a habit that lasts, not to choose the largest possible daily goal.
+
+Step 1: Welcome
+
+Suggested Arabic copy:
+
+“خلينا نبني عادة قراءة قرآن تقدر تستمر عليها كل يوم.”
+
+Explain that small, consistent actions are welcome.
+
+Step 2: Choose the daily reading goal
+
+Ask:
+
+“تحب تحدد وردك اليومي بإيه؟”
+
+Give the user two options:
+
+Option A: By pages
+
+* Half a page.
+* One page.
+* Two pages.
+* Three pages.
+* Custom quantity.
+
+Option B: By time
+
+* 2 minutes.
+* 5 minutes.
+* 10 minutes.
+* 15 minutes.
+* Custom duration.
+
+The user must choose either pages or minutes as the primary daily goal.
+
+Important goal-setting guidance
+
+Before confirming the goal, display a short explanation:
+
+“اختار كمية تقدر تحافظ عليها حتى في الأيام المزدحمة، مش كمية تحسسك بالإنجاز في يوم واحد.”
+
+Do not pressure users into choosing ambitious quantities.
+
+Allow users to change their goals at any time.
+
+Step 3: Introduce the Two-Minute Rule
+
+Explain that even on difficult days, the user can maintain the habit by reading for only two minutes.
+
+The minimum goal must be easy to access.
+
+Do not force users to complete their normal reading goal when they are having a difficult day.
+
+Step 4: Habit Stacking
+
+Ask:
+
+“إيه الفعل اللي بتعمله كل يوم ونقدر نربط قراءة القرآن بيه؟”
+
+Offer suggestions:
+
+* After Fajr prayer.
+* After breakfast.
+* After lunch.
+* After Isha prayer.
+* Before going to sleep.
+* After waking up.
+* After another user-defined daily activity.
+
+Allow custom activities.
+
+Help the user create a personal habit statement:
+
+“بعد ما أخلص [العادات اليومية المختارة]، هقرأ [الورد اليومي] من القرآن.”
+
+This should be saved in Firestore.
+
+Step 5: Preferred reading time
+
+Ask:
+
+“إمتى تحب تقرأ وردك؟”
+
+Allow:
+
+* Selecting a suggested time.
+* Choosing a custom time.
+* Changing it later.
+
+The user can choose both a daily routine trigger and a preferred clock time.
+
+Do not make either option mandatory if the user prefers flexibility.
+
+Step 6: Notification permission
+
+Explain the benefits of reminders before requesting browser notification permission.
+
+Do not request notification permission immediately upon opening the website.
+
+Ask only after the user understands the feature.
+
+The user must be able to skip this step.
+
+⸻
+
+6. MAIN DASHBOARD
+
+The Dashboard is the application’s home page.
+
+Its purpose is to help the user quickly understand today’s goal and start reading.
+
+Keep the interface simple and uncluttered.
+
+Main Dashboard components
+
+A. Daily reading goal
+
+Display:
+
+* Today’s reading goal.
+* Goal type.
+* Current progress.
+* Remaining amount.
+* Progress percentage.
+
+Examples:
+
+* “وردك اليوم: صفحة واحدة.”
+* “وردك اليوم: 5 دقائق.”
+
+B. Progress indicator
+
+Use a subtle progress bar.
+
+The percentage must be calculated according to the selected goal.
+
+For example:
+
+* If the user chooses one page, progress is based on pages read.
+* If the user chooses five minutes, progress is based on reading duration.
+
+Do not mix pages and minutes into one misleading percentage.
+
+C. Start Reading button
+
+The most prominent action on the dashboard.
+
+Suggested label:
+
+“ابدأ القراءة”
+
+It must open the Mushaf immediately.
+
+D. Don’t Miss button
+
+A clearly visible secondary action.
+
+Suggested label:
+
+“وضع الدقيقتين”
+
+It must start the two-minute reading experience.
+
+E. Last reading position
+
+Display:
+
+* Last Surah.
+* Last Ayah.
+* Last page.
+
+Provide a direct option to resume reading.
+
+F. Habit reminder
+
+Display the user’s chosen reading routine.
+
+Example:
+
+“قراءتك بعد الفطار.”
+
+G. Reading calendar
+
+Display a compact monthly calendar indicating days when the user read Quran.
+
+Use a subtle visual indication for completed reading days.
+
+Do not shame users for empty days.
+
+H. Quick settings
+
+Provide easy access to:
+
+* Adjust daily goal.
+* Reading preferences.
+* Reminder settings.
+* Reading history.
+
+⸻
+
+7. DON’T MISS MODE — THE TWO-MINUTE RULE
+
+This is one of the most important product features.
+
+The purpose is to help users avoid skipping their reading habit entirely when the day is almost over or when they have limited time.
+
+Concept
+
+If the user feels that the day is ending and they have not read their Quran portion, they can activate Don’t Miss Mode.
+
+The system should make this action effortless.
+
+User experience
+
+Display a prominent option:
+
+“لسه مفيش وقت؟ اقرأ دقيقتين بس.”
+
+When activated:
+
+1. Open the Quran reader.
+2. Resume from the last saved reading position.
+3. Start a two-minute timer.
+4. Encourage the user to read without pressure.
+5. Allow the user to continue after the timer finishes.
+6. Save the session automatically.
+
+Completion
+
+When two minutes are completed:
+
+Display a gentle message:
+
+“الحمد لله، حافظت على عادة القراءة النهارده.”
+
+Do not automatically mark the user’s normal daily goal as completed.
+
+Keep the two achievement states separate:
+
+* Normal daily goal completed.
+* Minimum two-minute goal completed.
+
+The user should be able to activate this mode manually whenever needed.
+
+The system should not force this mode or automatically replace the user’s normal goal.
+
+Important behavior
+
+* No penalties.
+* No accumulated missed goals.
+* No forced compensation.
+* No guilt-inducing messages.
+
+The goal is to make starting easy.
+
+⸻
+
+8. FLEXIBLE GOALS — ADJUSTING THE DAILY READING TARGET
+
+Allow users to increase or decrease their daily reading goal according to their circumstances.
+
+For example:
+
+A user who normally reads two pages daily might temporarily reduce the goal to one page.
+
+Another user might increase the target when they have more free time.
+
+Required functionality:
+
+* Edit the daily goal.
+* Change between pages and minutes.
+* Set a new quantity.
+* Save changes automatically.
+* Synchronize changes through Firestore.
+* Reflect updated goals immediately on the dashboard.
+
+Do not treat changing a goal as failure.
+
+Avoid excessive warnings when users reduce their targets.
+
+The user must remain in control.
+
+⸻
+
+9. COMEBACK MODE — RETURNING AFTER INTERRUPTION
+
+Create a dedicated feature called Comeback Mode.
+
+Its purpose is to help users resume Quran reading after missing several days or losing their routine.
+
+Concept
+
+When a user returns after an interruption, the system should make restarting easy.
+
+Suggested Arabic message:
+
+“وحشتنا قراءتك. مش محتاج تعوض اللي فات، ابدأ من جديد بالقدر اللي يناسبك.”
+
+Requirements
+
+* Detect periods of reading inactivity.
+* Offer a gentle comeback experience.
+* Allow users to resume from their last reading position.
+* Suggest returning with a manageable reading amount.
+* Offer the two-minute option.
+* Allow users to keep, reduce, or adjust their normal goal.
+
+Do not create overdue reading tasks.
+
+Do not add missed pages to future goals.
+
+Do not display negative streak statistics.
+
+The user must feel welcome to return at any time.
+
+⸻
+
+10. THE DIGITAL QURAN — MUSHAF READER
+
+The Mushaf is the core reading experience.
+
+The visual design must closely follow the uploaded reference image.
+
+Use the supplied image as the primary visual reference for the Quran’s appearance.
+
+Visual requirements
+
+The Quran must resemble a traditional printed Mushaf.
+
+Include:
+
+* Traditional Uthmani Quran typography.
+* Correct Arabic diacritics.
+* Traditional verse markers.
+* Ornamental Surah headers where appropriate.
+* Traditional page composition.
+* Page numbers.
+* Surah names.
+* Juz information.
+* Elegant margins.
+* Warm, paper-like background.
+
+Preserve the visual identity and readability of a traditional printed Quran.
+
+Do not create a generic Arabic text reader.
+
+Do not use an ordinary website font as a replacement for authentic Mushaf typography.
+
+Page navigation
+
+The reading interface must display ONE FULL PAGE AT A TIME.
+
+Do not use continuous vertical scrolling as the default reading experience.
+
+Required interaction:
+
+* Swipe left to move to the next page.
+* Swipe right to move to the previous page.
+* Support touch gestures on mobile.
+* Support appropriate navigation controls on desktop.
+* Use smooth but subtle transitions.
+* Avoid unnecessary animation.
+* Prevent accidental navigation when interacting with verse controls.
+
+The page should fit the available viewport while maintaining readability.
+
+Allow zooming when needed without distorting Quran text.
+
+Reading position
+
+Automatically save:
+
+* Current page.
+* Current Surah.
+* Current Ayah.
+* Last reading timestamp.
+
+When the user returns, reopen the last saved reading position.
+
+Synchronize this position across all authenticated devices.
+
+Critical Quran content requirements
+
+Use an authoritative, verified Quran text source.
+
+Do not generate Quranic verses using an AI model.
+
+Do not manually reconstruct Quranic text without verification.
+
+Use an authentic Uthmani text source with appropriate usage rights.
+
+If the design uses page images or rendered pages, ensure:
+
+* Every page matches an authenticated Mushaf edition.
+* The page ordering is correct.
+* Every verse is mapped to its correct location.
+* Surah and Ayah references are accurate.
+
+The visual reference is a design guide, not a substitute for an authoritative Quran content source.
+
+Do not fabricate missing Quranic text or page assets.
+
+⸻
+
+11. TAFSIR AL-SAADI — VERSE INTERACTION
+
+Integrate Tafsir Al-Saadi directly into the Quran reader.
+
+The user must not need to leave the application to access the interpretation.
+
+Interaction
+
+When the user taps or clicks any Quranic verse:
+
+1. Identify the exact Surah and Ayah.
+2. Open a clean interpretation panel.
+3. Retrieve the corresponding Tafsir Al-Saadi text.
+4. Display the interpretation in Arabic.
+5. Allow the user to close the panel and return to the same Quran page.
+
+Design
+
+On mobile:
+
+* Use a bottom sheet or a suitable overlay.
+
+On desktop:
+
+* Use a side panel or centered dialog.
+
+Keep the Quran page visible whenever practical.
+
+Important requirements
+
+* Use a reliable and authorized source for Tafsir Al-Saadi.
+* Map each interpretation to the correct Surah and Ayah.
+* Never invent or AI-generate the tafsir text.
+* Preserve Arabic formatting.
+* Clearly identify the source as Tafsir Al-Saadi.
+* Show a loading state when fetching the interpretation.
+* Handle unavailable interpretations gracefully.
+
+Do not add a summary of Tafsir after the daily reading session.
+
+The user explicitly wants the interpretation available when selecting an individual verse, not an automatically displayed post-reading summary.
+
+⸻
+
+12. READING HISTORY AND CALENDAR
+
+Create a dedicated reading history experience.
+
+Calendar
+
+Display a monthly calendar.
+
+Each day should have a subtle visual status:
+
+* Read today.
+* Completed normal goal.
+* Completed minimum two-minute goal.
+* No reading recorded.
+
+Use neutral, friendly visual indicators.
+
+Do not use red warning colors for missed days.
+
+Reading history details
+
+When selecting a date, show:
+
+* Reading duration.
+* Number of pages read.
+* Number of verses read when available.
+* Whether the normal goal was completed.
+* Whether Don’t Miss Mode was used.
+
+Statistics
+
+Display simple personal insights, such as:
+
+* Total reading days.
+* Total reading duration.
+* Total pages read.
+* Current reading goal.
+* Recent reading activity.
+
+Avoid turning statistics into competition.
+
+Do not prioritize streak length over sustainable reading behavior.
+
+⸻
+
+13. NOTIFICATIONS — BROWSER PUSH ONLY
+
+The only approved reminder channel is Browser Push Notifications.
+
+Do not implement email reminders.
+
+Do not use in-app notifications as a separate reminder channel.
+
+Use Firebase Cloud Messaging (FCM).
+
+Notification scenarios
+
+A. Scheduled reading reminder
+
+At the user’s preferred time, send a gentle reminder.
+
+Example:
+
+“حان وقت وردك اليومي. افتح المصحف وابدأ بالقدر اللي يناسبك.”
+
+B. Missed scheduled reading time
+
+If the user has not completed their goal after the scheduled reading time, a suitable reminder may be sent.
+
+Example:
+
+“لسه تقدر تقرأ وردك النهارده.”
+
+C. End-of-day reminder
+
+If the daily reading goal has not been completed, send a gentle reminder suggesting Don’t Miss Mode.
+
+Example:
+
+“اليوم لسه مخلصش. دقيقتين من القرآن ممكن يكونوا بداية جميلة.”
+
+Notification logic
+
+* Stop relevant reminders after the user completes the normal daily goal.
+* Avoid unnecessary repeated notifications.
+* Respect the user’s notification preferences.
+* Allow the user to disable notifications.
+* Handle notification permissions correctly.
+* Respect the user’s local timezone.
+* Avoid sending notifications at inappropriate hours.
+
+Technical implementation
+
+Implement:
+
+* Firebase Cloud Messaging.
+* Web Push notifications.
+* Service Worker.
+* FCM token registration.
+* Secure token management.
+* Firebase Cloud Functions for scheduling and checking notification eligibility.
+
+Support browsers and devices that permit Web Push.
+
+Account for platform-specific limitations, especially iOS browser notification requirements and installed Progressive Web App requirements.
+
+Never promise push notifications on unsupported browser configurations.
+
+Ask for permission only after explaining the feature.
+
+⸻
+
+14. DESIGN SYSTEM AND USER INTERFACE
+
+The design must communicate calmness, simplicity, focus, and spiritual connection.
+
+Overall direction
+
+Use a refined, elegant, minimal Islamic-inspired interface.
+
+Avoid:
+
+* Overly decorative Islamic patterns.
+* Excessive gradients.
+* Bright, aggressive colors.
+* Crowded dashboards.
+* Too many cards.
+* Gamification aesthetics.
+* Excessive animations.
+
+Suggested visual palette
+
+Use a warm, natural color palette:
+
+* Warm ivory.
+* Soft beige.
+* Muted botanical green.
+* Deep forest green.
+* Subtle gold accents.
+* Dark charcoal for text.
+
+The Quran reader should visually resemble a printed Mushaf.
+
+The dashboard should feel like a modern, peaceful productivity application.
+
+Typography
+
+Use:
+
+* A highly readable Arabic UI font.
+* A proper Uthmani Quran font for Quranic text.
+* Clear hierarchy between headings, descriptions, and actions.
+
+Do not use the same font indiscriminately for Quranic text and UI elements.
+
+Layout
+
+Prioritize mobile usability.
+
+On mobile:
+
+* Simple dashboard.
+* Large reading button.
+* Clear navigation.
+* Easy access to Don’t Miss Mode.
+* Full-page Quran reading experience.
+* Comfortable touch targets.
+
+On desktop:
+
+* More spacious layout.
+* Centered reading experience.
+* Optional sidebar navigation.
+* Responsive Quran page sizing.
+
+Suggested navigation
+
+Keep navigation simple:
+
+1. الرئيسية.
+2. المصحف.
+3. سجل القراءة.
+4. الإعدادات.
+
+Avoid unnecessary sections.
+
+⸻
+
+15. USER SETTINGS
+
+Create a settings page containing:
+
+Reading settings
+
+* Daily goal type.
+* Daily goal quantity.
+* Reading preferences.
+* Last reading position.
+* Quran display settings.
+
+Habit settings
+
+* Daily routine trigger.
+* Preferred reading time.
+* Habit stacking statement.
+
+Notifications
+
+* Enable/disable browser push.
+* Notification preferences.
+* Reminder time.
+* Permission status.
+
+Account
+
+* Email.
+* Password reset.
+* Sign out.
+
+All changes must be saved to Firebase.
+
+⸻
+
+16. RECOMMENDED APPLICATION ARCHITECTURE
+
+Use a clean, scalable, maintainable architecture.
+
+Recommended stack:
+
+* React.
+* TypeScript.
+* A modern build tool such as Vite or Next.js, selected according to deployment requirements.
+* Tailwind CSS.
+* Firebase Authentication.
+* Cloud Firestore.
+* Firebase Cloud Messaging.
+* Firebase Cloud Functions.
+* Service Worker for Web Push.
+* PWA support where appropriate.
+
+Organize the project into reusable components.
+
+Suggested modules:
+
+* Authentication.
+* Onboarding.
+* Dashboard.
+* Habit System.
+* Daily Goals.
+* Don’t Miss Mode.
+* Comeback Mode.
+* Quran Reader.
+* Tafsir Viewer.
+* Reading History.
+* Calendar.
+* Notifications.
+* Settings.
+* Firebase Services.
+
+Keep business logic separate from UI components.
+
+Use typed data models.
+
+Implement proper loading, empty, error, and offline states.
+
+Avoid unnecessary dependencies.
+
+⸻
+
+17. DATABASE DESIGN
+
+Create a well-structured Firestore schema.
+
+A possible starting structure:
+
+users/{userId}
+
+users/{userId}/settings/main
+
+users/{userId}/goals/current
+
+users/{userId}/readingProgress/current
+
+users/{userId}/readingHistory/{date}
+
+users/{userId}/habitSettings/main
+
+users/{userId}/notificationSettings/main
+
+users/{userId}/devices/{deviceId}
+
+You may refine the schema when necessary.
+
+Requirements:
+
+* Use server timestamps where appropriate.
+* Store timestamps consistently.
+* Respect the user’s timezone.
+* Avoid duplicate daily records.
+* Ensure that reading sessions are not accidentally counted twice.
+* Keep user-specific data isolated.
+* Implement proper Firestore indexes where needed.
+* Configure Firestore Security Rules.
+* Consider atomic updates and transaction safety for concurrent changes.
+
+The Quran text and Tafsir content should be managed as trusted content datasets or appropriate external content sources, not as user-generated content.
+
+⸻
+
+18. IMPORTANT FUNCTIONAL RULES
+
+The following rules must always be respected:
+
+1. Reading a small amount is still valuable.
+2. Don’t Miss Mode does not automatically complete the normal goal.
+3. Missing days never create reading debt.
+4. Users can change their goals whenever needed.
+5. Comeback Mode must never shame users.
+6. The last reading position must be saved automatically.
+7. User progress must synchronize across devices.
+8. Quranic text must come from a verified source.
+9. Tafsir must come from a verified source.
+10. The user must be able to access Tafsir by selecting individual verses.
+11. The Quran reader must show one full page at a time.
+12. Swipe navigation must work smoothly.
+13. Browser Push is the only reminder channel.
+14. Notifications must respect completion status and user preferences.
+15. The entire user experience must be Arabic and RTL.
+16. The dashboard must remain simple.
+17. Never sacrifice Quranic accuracy for visual design.
+
+⸻
+
+19. DEVELOPMENT AND IMPLEMENTATION PLAN
+
+Build the project in logical phases.
+
+Phase 1 — Foundation
+
+* Project setup.
+* Design system.
+* Arabic RTL support.
+* Responsive layout.
+* Firebase configuration.
+* Authentication.
+
+Phase 2 — Habit System
+
+* Onboarding.
+* Goal selection.
+* Pages/minutes goal modes.
+* Habit Stacking.
+* Preferred reading time.
+* Goal editing.
+
+Phase 3 — Quran Reader
+
+* Traditional Mushaf design.
+* One-page reading mode.
+* Swipe navigation.
+* Verified Quran content integration.
+* Verse selection.
+* Tafsir Al-Saadi integration.
+* Reading position persistence.
+
+Phase 4 — Continuity Features
+
+* Don’t Miss Mode.
+* Two-minute timer.
+* Comeback Mode.
+* Reading history.
+* Monthly calendar.
+* Flexible goals.
+
+Phase 5 — Notifications
+
+* FCM.
+* Browser push.
+* Service Worker.
+* Scheduling logic.
+* Notification preferences.
+
+Phase 6 — Testing and Quality
+
+* Authentication testing.
+* Firestore security testing.
+* Cross-device synchronization testing.
+* Offline behavior testing.
+* Quran page mapping verification.
+* Tafsir mapping verification.
+* Mobile gesture testing.
+* Responsive design testing.
+* Notification permission and delivery testing.
+
+⸻
+
+20. FINAL ACCEPTANCE CRITERIA
+
+The project is not complete until the following requirements work:
+
+Authentication
+
+* Users can register and sign in with email.
+* Users can restore their accounts.
+* Sessions persist correctly.
+
+Persistence
+
+* Changes are saved to Firestore.
+* Progress survives browser refreshes.
+* The same account displays the same progress on another device.
+
+Habit system
+
+* Users can select pages or minutes.
+* Users can adjust their goals.
+* Users can define a daily habit trigger.
+* Users can choose a reading time.
+
+Don’t Miss
+
+* Users can activate the two-minute mode.
+* The timer works.
+* Reading is saved.
+* The minimum goal is recorded separately.
+
+Comeback
+
+* Returning users can resume without accumulated obligations.
+* No guilt-based messages are displayed.
+
+Quran
+
+* The reader resembles the supplied Mushaf reference.
+* One page is displayed at a time.
+* Swipe navigation works.
+* The correct reading position is restored.
+
+Tafsir
+
+* Selecting a verse displays its corresponding Tafsir Al-Saadi.
+* The correct Surah and Ayah are always used.
+
+History
+
+* Reading days appear in the calendar.
+* Reading activity is recorded correctly.
+
+Notifications
+
+* Browser Push works on supported devices.
+* Scheduled reminders respect user preferences.
+* Completed goals suppress unnecessary reminders.
+
+Responsive design
+
+* The website works properly on mobile and desktop.
+
+⸻
+
+21. EXECUTION INSTRUCTIONS
+
+Do not stop after generating a landing page or a visual prototype.
+
+Build the actual application with working functionality.
+
+Start by:
+
+1. Inspecting the project environment.
+2. Establishing the architecture.
+3. Creating the design system.
+4. Implementing Firebase integration.
+5. Building the core user journey.
+6. Connecting all features to persistent data.
+7. Testing the complete experience.
+
+If Firebase credentials are not available, create a clear configuration template and explain exactly which environment variables and Firebase settings are needed.
+
+Do not fabricate API credentials.
+
+If a verified Quran or Tafsir source is not available, do not invent its contents. Build the integration layer and clearly identify the missing content dependency.
+
+Do not present unfinished integrations as functional.
+
+Use realistic loading states, error handling, and empty states.
+
+Prioritize a fully working core experience over decorative complexity.
+
+The final result should feel like a polished, peaceful, reliable Quran reading companion that helps people build a lasting relationship with daily Quran reading.
+
+The ultimate success metric is not how much Quran the user reads in one day. It is how easily they can return to reading tomorrow, and the day after that.

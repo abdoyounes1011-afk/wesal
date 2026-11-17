@@ -1,0 +1,307 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique user ID matching auth.uid",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "email"]
+    },
+    "ReadingGoal": {
+      "title": "ReadingGoal",
+      "description": "User daily reading target and preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID",
+          "maxLength": 128
+        },
+        "goalType": {
+          "type": "string",
+          "description": "Type of daily target: pages or minutes",
+          "enum": ["pages", "minutes"],
+          "maxLength": 16
+        },
+        "dailyTarget": {
+          "type": "number",
+          "description": "Target quantity (pages or minutes)"
+        },
+        "minimumTwoMinuteGoal": {
+          "type": "boolean",
+          "description": "Whether minimum 2-minute goal is enabled"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "goalType", "dailyTarget"]
+    },
+    "ReadingProgress": {
+      "title": "ReadingProgress",
+      "description": "Current reading position and today's session progress",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID",
+          "maxLength": 128
+        },
+        "lastSurah": {
+          "type": "number",
+          "description": "Surah number (1-114)"
+        },
+        "lastAyah": {
+          "type": "number",
+          "description": "Ayah number"
+        },
+        "lastPage": {
+          "type": "number",
+          "description": "Mushaf page number (1-604)"
+        },
+        "lastSurahName": {
+          "type": "string",
+          "description": "Surah name in Arabic",
+          "maxLength": 64
+        },
+        "lastReadingTimestamp": {
+          "type": "string",
+          "description": "ISO timestamp of last read",
+          "maxLength": 64
+        },
+        "dailyPagesRead": {
+          "type": "number",
+          "description": "Pages read today"
+        },
+        "dailyMinutesRead": {
+          "type": "number",
+          "description": "Minutes read today"
+        },
+        "isDailyGoalCompleted": {
+          "type": "boolean",
+          "description": "Whether normal daily goal was completed today"
+        },
+        "isTwoMinuteGoalCompleted": {
+          "type": "boolean",
+          "description": "Whether 2-minute goal was completed today"
+        },
+        "lastActiveDate": {
+          "type": "string",
+          "description": "Date string YYYY-MM-DD for daily counter rollover",
+          "maxLength": 16
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "lastSurah", "lastAyah", "lastPage"]
+    },
+    "ReadingHistory": {
+      "title": "ReadingHistory",
+      "description": "Daily reading summary for history and calendar",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID",
+          "maxLength": 128
+        },
+        "date": {
+          "type": "string",
+          "description": "Date string in YYYY-MM-DD",
+          "maxLength": 16
+        },
+        "pagesRead": {
+          "type": "number",
+          "description": "Total pages read on this day"
+        },
+        "minutesRead": {
+          "type": "number",
+          "description": "Total minutes read on this day"
+        },
+        "versesRead": {
+          "type": "number",
+          "description": "Total verses read on this day"
+        },
+        "isDailyGoalCompleted": {
+          "type": "boolean",
+          "description": "Normal goal completed"
+        },
+        "isChecked": {
+          "type": "boolean",
+          "description": "User manual checkmark indicating reading on this day"
+        },
+        "isTwoMinuteGoalCompleted": {
+          "type": "boolean",
+          "description": "Don't miss 2-minute goal completed"
+        },
+        "lastSurah": {
+          "type": "number",
+          "description": "Last Surah on this day"
+        },
+        "lastAyah": {
+          "type": "number",
+          "description": "Last Ayah on this day"
+        },
+        "lastPage": {
+          "type": "number",
+          "description": "Last page on this day"
+        },
+        "lastSurahName": {
+          "type": "string",
+          "description": "Last Surah name on this day",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "date"]
+    },
+    "HabitSettings": {
+      "title": "HabitSettings",
+      "description": "User habit stacking routine and preferred time",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID",
+          "maxLength": 128
+        },
+        "dailyRoutine": {
+          "type": "string",
+          "description": "Chosen daily routine trigger key",
+          "maxLength": 64
+        },
+        "customRoutine": {
+          "type": "string",
+          "description": "Custom user-defined routine",
+          "maxLength": 200
+        },
+        "preferredTime": {
+          "type": "string",
+          "description": "Time of day in HH:mm",
+          "maxLength": 16
+        },
+        "habitStatement": {
+          "type": "string",
+          "description": "Personal habit stacking formula statement in Arabic",
+          "maxLength": 300
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId"]
+    },
+    "NotificationSettings": {
+      "title": "NotificationSettings",
+      "description": "User browser push notification preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID",
+          "maxLength": 128
+        },
+        "browserPushEnabled": {
+          "type": "boolean",
+          "description": "Browser push enabled"
+        },
+        "fcmToken": {
+          "type": "string",
+          "description": "Device FCM token",
+          "maxLength": 512
+        },
+        "scheduledReminder": {
+          "type": "boolean",
+          "description": "Send reminder at scheduled time"
+        },
+        "missedReminder": {
+          "type": "boolean",
+          "description": "Send reminder if scheduled time passed without reading"
+        },
+        "endOfDayReminder": {
+          "type": "boolean",
+          "description": "Send reminder before day ends suggesting 2-minute mode"
+        },
+        "preferredTime": {
+          "type": "string",
+          "description": "Preferred notification time HH:mm",
+          "maxLength": 16
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document keyed by auth.uid"
+    },
+    "/users/{userId}/goals/current": {
+      "schema": "ReadingGoal",
+      "description": "User's current reading goal"
+    },
+    "/users/{userId}/readingProgress/current": {
+      "schema": "ReadingProgress",
+      "description": "User's live reading progress and position"
+    },
+    "/users/{userId}/readingHistory/{historyDate}": {
+      "schema": "ReadingHistory",
+      "description": "Daily reading history records keyed by YYYY-MM-DD"
+    },
+    "/users/{userId}/habitSettings/main": {
+      "schema": "HabitSettings",
+      "description": "Habit stacking settings"
+    },
+    "/users/{userId}/notificationSettings/main": {
+      "schema": "NotificationSettings",
+      "description": "Notification preferences"
+    }
+  }
+}

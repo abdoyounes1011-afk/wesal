@@ -1,0 +1,6 @@
+{
+  "name": "وِصال - نظام عادة قراءة القرآن الكريم",
+  "description": "منصة ومنظومة متكاملة لبناء وتثبيت عادة قراءة القرآن الكريم يومياً بأسلوب مستدام، تجمع بين قاعدة الدقيقتين، ربط العادات، مصحف إلكتروني بصفحات كاملة، وتفسير السعدي.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

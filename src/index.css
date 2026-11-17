@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-ui: 'Cairo', system-ui, -apple-system, sans-serif;
+    --font-quran: 'Amiri Quran', 'Scheherazade New', 'Amiri', serif;
+    --font-reading: 'Amiri', 'Scheherazade New', serif;
+  }
+
+  body {
+    font-family: var(--font-ui);
+    background-color: #FAF7F0;
+    color: #1F2421;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.font-quran {
+  font-family: var(--font-quran);
+  line-height: 2.35;
+  letter-spacing: 0 !important;
+  word-spacing: 0.05em;
+}
+
+.font-reading {
+  font-family: var(--font-reading);
+}
+
+.font-ui {
+  font-family: var(--font-ui);
+}
+
+/* Authentic Mushaf Paper & Beige Frame */
+.mushaf-beige-frame {
+  background: linear-gradient(145deg, #EFE3CC 0%, #E6D5B8 50%, #EFE3CC 100%);
+  border: 2px solid #D4BC94;
+  box-shadow:
+    0 12px 30px -10px rgba(107, 83, 44, 0.18),
+    inset 0 0 0 1px rgba(255, 252, 245, 0.65);
+}
+
+.mushaf-paper {
+  background-color: #FDFBF7;
+  background-image: radial-gradient(#F2E9D8 0.8px, transparent 0.8px);
+  background-size: 22px 22px;
+}
+
+.mushaf-inner-frame {
+  border: 1.5px solid #D8C39E;
+  box-shadow: inset 0 0 0 3px #FDFBF7, inset 0 0 0 4.5px rgba(212, 188, 148, 0.55);
+}
+
+/* Islamic header ornamental box */
+.surah-header-frame {
+  background: linear-gradient(135deg, rgba(235, 221, 195, 0.55) 0%, rgba(250, 244, 232, 0.9) 50%, rgba(235, 221, 195, 0.55) 100%);
+  border: 1.5px solid #D2B78A;
+  box-shadow: inset 0 0 10px rgba(196, 166, 116, 0.16);
+}
+
+/* Verse marker rosette with number strictly centered inside */
+.verse-end-symbol {
+  font-family: var(--font-reading);
+  color: #6E5225;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 1.55em;
+  height: 1.55em;
+  margin: 0 0.2em;
+  vertical-align: middle;
+  line-height: 1;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+.mushaf-verses-block {
+  text-align: justify;
+  text-align-last: center;
+}
+
+/* Smooth page transitions */
+.page-flip-enter {
+  opacity: 0;
+  transform: scale(0.98);
+}
+.page-flip-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4A674;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1B4332;
+}
